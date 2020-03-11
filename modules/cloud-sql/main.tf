@@ -32,7 +32,7 @@ locals {
 resource "google_sql_database_instance" "master" {
   depends_on = [null_resource.dependency_getter]
 
-  provider         = "google-beta"
+  provider         = google-beta
   name             = var.name
   project          = var.project
   region           = var.region
@@ -41,7 +41,6 @@ resource "google_sql_database_instance" "master" {
   settings {
     tier                        = var.machine_type
     activation_policy           = var.activation_policy
-    authorized_gae_applications = var.authorized_gae_applications
     disk_autoresize             = var.disk_autoresize
 
     ip_configuration {
@@ -59,7 +58,6 @@ resource "google_sql_database_instance" "master" {
     }
 
     location_preference {
-      follow_gae_application = var.follow_gae_application
       zone                   = var.master_zone
     }
 
@@ -154,7 +152,7 @@ resource "google_sql_database_instance" "failover_replica" {
     google_sql_user.default,
   ]
 
-  provider         = "google-beta"
+  provider         = google-beta
   name             = "${var.name}-failover"
   project          = var.project
   region           = var.region
@@ -172,7 +170,6 @@ resource "google_sql_database_instance" "failover_replica" {
     crash_safe_replication = true
 
     tier                        = var.machine_type
-    authorized_gae_applications = var.authorized_gae_applications
     disk_autoresize             = var.disk_autoresize
 
     ip_configuration {
@@ -232,7 +229,7 @@ resource "google_sql_database_instance" "read_replica" {
     google_sql_user.default,
   ]
 
-  provider         = "google-beta"
+  provider         = google-beta
   name             = "${var.name}-read-${count.index}"
   project          = var.project
   region           = var.region
@@ -248,7 +245,6 @@ resource "google_sql_database_instance" "read_replica" {
 
   settings {
     tier                        = var.machine_type
-    authorized_gae_applications = var.authorized_gae_applications
     disk_autoresize             = var.disk_autoresize
 
     ip_configuration {
@@ -266,7 +262,6 @@ resource "google_sql_database_instance" "read_replica" {
     }
 
     location_preference {
-      follow_gae_application = var.follow_gae_application
       zone                   = element(var.read_replica_zones, count.index)
     }
 
