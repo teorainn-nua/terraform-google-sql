@@ -187,7 +187,6 @@ resource "google_sql_database_instance" "failover_replica" {
     }
 
     location_preference {
-      follow_gae_application = var.follow_gae_application
       zone                   = var.mysql_failover_replica_zone
     }
 
